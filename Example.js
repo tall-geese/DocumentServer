@@ -1,7 +1,24 @@
 function testFunction(){
+    // var myArray = [['hi','hey','yo'],['bye','cya','k']]
+    // myArray.forEach((innArray,i) => {
+    //    innArray.forEach((word) =>{
+    //         console.log(word);
+    //    }); 
+    // });
 
+    // while(node.firstChild) {
+    //     node.removeChild(node.firstChild);
+    // }
+    console.log(document.getElementById("document-input").value == '');
 
-    console.log('hit this?');
+    var myArray = [];
+    myArray.push(['WI-82-001','Creation of a Document','Git.pdf']);
+    myArray.push(['PR-80-001','Cleaning some tanks','data.doc']);
+    myArray.push(['WI-85-020','Im Testing Stuff','Git.pdf']);
+    myArray.push(['FO-82-015','This is a form','Git.pdf']);
+
+    // console.log(myArray.toString());
+
     myUL = document.getElementById("document-list");
 
     li = document.createElement('li');
