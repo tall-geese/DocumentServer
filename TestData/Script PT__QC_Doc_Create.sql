@@ -8,6 +8,7 @@ Create Table dbo.PT_QC_Doc(
 	Doc_Name VARCHAR(255),
 	Doc_Type VARCHAR(50),
 	Revision VARCHAR(2),
+	Doc_Status VARCHAR(15),
 	Effective_Date DATETIME,
 	File_Path VARCHAR(255)
 );
