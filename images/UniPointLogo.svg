@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="testunipoint.svg"
+   inkscape:export-ydpi="96"
+   inkscape:export-xdpi="96"
+   inkscape:export-filename="D:\Coding\Projects\Development Server\images\unipointLogo_500px.png"
+   id="svg891"
+   version="1.1"
+   viewBox="0 0 476.25001 132.29167"
+   height="500"
+   width="1800">
+  <defs
+     id="defs885" />
+  <sodipodi:namedview
+     inkscape:window-maximized="1"
+     inkscape:window-y="-9"
+     inkscape:window-x="-9"
+     inkscape:window-height="1051"
+     inkscape:window-width="1842"
+     units="px"
+     inkscape:pagecheckerboard="true"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="410.91661"
+     inkscape:cx="823.43634"
+     inkscape:zoom="0.49497475"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata888">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <circle
+       style="fill:#4c885d;fill-opacity:1;stroke:#000000;stroke-width:0.853;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path866"
+       cx="87.519722"
+       cy="43.059143"
+       r="8.9104023" />
+    <path
+       style="fill:#4c885d;fill-opacity:1;stroke:#000000;stroke-width:0.853;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 95.906678,127.31101 c 0,-0.23397 0.897948,-3.21679 1.995437,-6.62848 9.631205,-29.93986 15.553685,-66.108103 13.720275,-83.788757 -0.63612,-6.13446 -1.42291,-8.228899 -4.23042,-11.261335 -4.17504,-4.509546 -10.640599,-6.994121 -18.200626,-6.994121 -10.431663,0 -18.388446,4.983396 -22.922907,14.356776 -5.293379,10.942174 -9.508003,30.376863 -11.944527,55.079164 l -0.739543,7.497776 h -8.177971 -8.177967 l 2.65e-4,-1.847286 c 0.0019,-11.538554 5.119428,-38.791796 11.364505,-60.525531 4.618159,-16.071895 6.050174,-19.371935 9.988412,-23.018055 4.645808,-4.3011911 10.357742,-5.4427885 23.046619,-4.6061271 4.147666,0.2734787 11.521329,0.6834079 16.385905,0.9109557 4.864585,0.2275411 10.129655,0.618992 11.700165,0.8698826 10.56119,1.6871587 16.29894,6.6886758 18.85004,16.4313048 2.81706,10.758406 0.50652,33.262607 -6.83473,66.569011 -1.686,7.649165 -7.42368,30.766912 -8.873,35.750262 l -0.47405,1.62995 h -8.23794 c -5.082759,0 -8.238003,-0.16293 -8.238003,-0.42539 z"
+       id="path868" />
+    <path
+       sodipodi:nodetypes="cssscsscsssccsssssscssccc"
+       style="fill:#4c885d;fill-opacity:1;stroke:#000000;stroke-width:0.853;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 40.624377,126.40609 C 22.939457,125.34165 12.921809,121.91975 7.2377597,115.00167 3.8914426,110.92885 3.5887222,109.84212 3.3994462,101.22253 3.0169513,83.804456 6.2262954,60.955606 14.036773,25.490406 L 18.704677,4.2947425 h 8.392568 c 4.615907,0 8.392567,0.161149 8.392567,0.358117 0,0.196968 -1.448691,6.7982715 -3.219302,14.6695695 -8.690494,38.633757 -10.679576,50.785173 -11.384272,69.547216 -0.432951,11.527095 -0.287276,14.879785 3.664553,18.831605 1.052567,1.05257 8.395115,4.78505 12.608409,5.02192 l 3.941864,0.22161 v 0 c 12.117028,-0.0221 17.379341,-0.85073 22.165654,-5.41609 1.976514,-1.88529 3.118845,-3.55223 5.150302,-7.51561 4.256725,-8.304926 5.900873,-14.21476 7.743844,-27.835007 0.636524,-4.704186 1.226119,-8.797558 1.310198,-9.096381 0.115255,-0.409612 2.135129,-0.543316 8.207618,-0.543316 4.430102,0 8.054729,0.168553 8.054729,0.374581 0,0.206026 -0.690843,4.26461 -1.535215,9.019069 -4.506815,25.377013 -9.783781,41.767194 -14.896159,46.267294 -2.64569,2.32882 -9.843248,5.847 -14.211718,6.94669 -3.405695,0.85735 -11.766624,1.764 -15.21288,1.64969 -0.95623,-0.0318 -4.220112,-0.20703 -7.25306,-0.38958 z"
+       id="path870" />
+    <text
+       id="text905"
+       y="71.629036"
+       x="141.37291"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:80.5127px;line-height:1.25;font-family:'Poor Richard';-inkscape-font-specification:'Poor Richard Bold';fill:#646464;fill-opacity:1;stroke:none;stroke-width:2.01282;"
+       xml:space="preserve"><tspan
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Ebrima;-inkscape-font-specification:'Ebrima Bold Italic';fill:#646464;fill-opacity:1;stroke-width:2.01282;"
+         y="71.629036"
+         x="141.37291"
+         id="tspan903"
+         sodipodi:role="line">uniPoint</tspan></text>
+    <text
+       id="text1470"
+       y="95.333031"
+       x="314.27475"
+       style="font-weight:bold;font-size:16.1128px;line-height:1.25;font-family:'Perpetua Titling MT';-inkscape-font-specification:'Perpetua Titling MT Bold';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01245;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01245;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         y="95.333031"
+         x="314.27475"
+         id="tspan1468"
+         sodipodi:role="line">DOCUMENT</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:16.1128px;line-height:1.25;font-family:'Perpetua Titling MT';-inkscape-font-specification:'Perpetua Titling MT Bold';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01245;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="352.62985"
+       y="112.60377"
+       id="text1470-1"><tspan
+         sodipodi:role="line"
+         id="tspan1468-1"
+         x="352.62985"
+         y="112.60377"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.01245;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">VIEWER</tspan></text>
+  </g>
+</svg>

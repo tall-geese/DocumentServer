@@ -11,11 +11,11 @@ function testFunction(){
     // }
     console.log(document.getElementById("document-input").value == '');
 
-    var myArray = [];
-    myArray.push(['WI-82-001','Creation of a Document','Git.pdf']);
-    myArray.push(['PR-80-001','Cleaning some tanks','data.doc']);
-    myArray.push(['WI-85-020','Im Testing Stuff','Git.pdf']);
-    myArray.push(['FO-82-015','This is a form','Git.pdf']);
+    // var myArray = [];
+    // myArray.push(['WI-82-001','Creation of a Document','Git.pdf']);
+    // myArray.push(['PR-80-001','Cleaning some tanks','data.doc']);
+    // myArray.push(['WI-85-020','Im Testing Stuff','Git.pdf']);
+    // myArray.push(['FO-82-015','This is a form','Git.pdf']);
 
     // console.log(myArray.toString());
 
@@ -30,11 +30,11 @@ function testFunction(){
     iconDiv.className += 'li-icon'
 
     var iconAnchor = document.createElement('a');
-    iconAnchor.setAttribute("href", "Git.pdf");
-    iconAnchor.setAttribute("targer", "_blank");
+    iconAnchor.setAttribute("href", "data.doc");
+    // iconAnchor.setAttribute("target", "_blank");
 
     var iconImg = document.createElement('img');
-    iconImg.setAttribute("src", "pdf-icon.png");
+    iconImg.setAttribute("src", "images/word-doc-icon.png");
     iconImg.setAttribute("width", "40px");
     iconImg.setAttribute("height", "40px");
 
@@ -63,10 +63,11 @@ function testFunction(){
     wiLabel.appendChild(wiLabelHeader);
     wiLabelDiv.appendChild(wiLabel);
 
-
+    // Append our created subdivisions to the list element
     li.appendChild(iconDiv);
     li.appendChild(wiNameDiv);
     li.appendChild(wiLabelDiv);
 
+    // append the list element to the unordered list
     myUL.appendChild(li)
 }
