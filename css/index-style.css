@@ -1,8 +1,8 @@
 body {
-    /* background: linear-gradient(to right, #0a4992,  #2da1a4); */
-    /* background: linear-gradient(to right, #0a4992,  #ffffff); */
-    background: linear-gradient(to right, #dfdfdf,  #aaaaaa);
-    /* background-color: rgb(255, 255, 255); */
+    background-image: url("../images/index-background.png");
+    background-repeat: no-repeat;
+    background-position: top right;
+
 }
 #logo{
     margin-top: 50px;
