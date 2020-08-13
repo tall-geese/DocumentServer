@@ -9,7 +9,6 @@ function testFunction(){
     // while(node.firstChild) {
     //     node.removeChild(node.firstChild);
     // }
-    console.log(document.getElementById("document-input").value == '');
 
     // var myArray = [];
     // myArray.push(['WI-82-001','Creation of a Document','Git.pdf']);
@@ -30,11 +29,11 @@ function testFunction(){
     iconDiv.className += 'li-icon'
 
     var iconAnchor = document.createElement('a');
-    iconAnchor.setAttribute("href", "data.doc");
+    iconAnchor.setAttribute("href", "static/data.doc");
     // iconAnchor.setAttribute("target", "_blank");
 
     var iconImg = document.createElement('img');
-    iconImg.setAttribute("src", "images/word-doc-icon.png");
+    iconImg.setAttribute("src", "static/images/pdf-icon.png");
     iconImg.setAttribute("width", "40px");
     iconImg.setAttribute("height", "40px");
 

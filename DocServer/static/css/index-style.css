@@ -1,0 +1,16 @@
+body {
+    background-image: url("../images/index-background.png");
+    background-repeat: no-repeat;
+    background-position: top right;
+
+}
+
+#logo{ margin-top: 50px;text-align: center;}
+
+#document-form{margin-right: 30%;margin-left: 30%; margin-top: 2%;}
+
+.list-group-item{padding: 2%;position: relative;}
+
+.WI-name{position: absolute;left: 70px;top: 0px;}
+
+.WI-label{position: absolute;left: 90px;top: 20px;}
