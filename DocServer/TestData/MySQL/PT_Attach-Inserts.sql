@@ -1,0 +1,15 @@
+INSERT INTO attachment (Attach_Reference, Attach_Path, Attach_Type) VALUES 
+('FO-83-001','\\Jade76\IQS Documents\Current\\FO-83-001 Supplier NCR.docx','Document'),
+('FO-83-005','\\Jade76\IQS Documents\Current\\Inspection Report Forms.xlsm','Document'),
+('PR-42-002','\\Jade76\IQS Documents\Current\\PR-42-002 Control of Records.doc','Document'),
+('PR-42-002','\\Jade76\IQS Documents\Current\\PR-42-002 Control of Records.pdf','Document PDF'),
+('PR-72-001','\\Jade76\IQS Documents\Current\\PR-72-001 Quoting.docx','Document'),
+('PR-72-001','\\Jade76\IQS Documents\Current\\PR-72-001 Quoting.pdf','Document PDF'),
+('PR-75-003','\\Jade76\IQS Documents\Current\PR-75-003 Shipping & Receiving.docx','Document'),
+('PR-75-003','\\Jade76\IQS Documents\Current\PR-75-003 Shipping & Receiving.pdf','Document PDF'),
+('WI-71-001','\\Jade76\IQS Documents\Current\\WI-71-001 PFMEA Instructions.docx','Document'),
+('WI-71-001','\\Jade76\IQS Documents\Current\WI-71-001 PFMEA Instructions.pdf','Document PDF'),
+('WI-75-005','\\Jade76\IQS Documents\Current\\WI-75-005 In-Process Cleaning of Metallic Implants.docx','Document'),
+('WI-75-005','\\Jade76\IQS Documents\Current\\WI-75-005 In-Process Cleaning of Metallic Implants.pdf','Document PDF'),
+('WI-75-057','\\Jade76\IQS Documents\Current\\WI-75-057 Line Clearance.docx','Document'),
+('WI-75-057','\\Jade76\IQS Documents\Current\\WI-75-057 Line Clearance.pdf','Document PDF');
