@@ -8,21 +8,34 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <script src= {{ url_for('static', filename='js/Example.js') }}></script>
+    <script src="/static/js/Main.js"></script>
+    <script src="/static/js/levenshtein.js"></script>
     <link rel="stylesheet" href="/static/css/index-style.css" type="text/css">    
     <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <script>
-        {{ func() }}
+        var documentList = [];
+        '{% for document in documents %}'
+            // console.log(typeof( '{{document|list}}' ));
+            var documentRow = '{{document|tojson}}';
+            documentRow = documentRow.substr(1, documentRow.length - 2);
+            documentRow = documentRow.replace(/\"/g, '');
+            documentArray = documentRow.split(',');
+
+            documentArray.forEach( (element, index, array) => {
+                documentArray[index] = documentArray[index].trim();
+            });
+            documentList.push(documentArray);
+        '{% endfor %}'
     </script>
     <div class="text-center" id="logo">
         <img src="/static/images/unipoint-logo2.png" class="rounded" width="600px" height="166px">
     </div>
     <form id="document-form">
         <div class="form-group">
-          <input type="text" class="form-control" id="document-input"  placeholder="Enter Document ID" autofocus
-          onkeyup="testFunction()" autocomplete="off">
+          <input  type="text" class="form-control" id="document-input"  placeholder="Enter Document ID" autofocus
+          onkeyup="getInput(getEditDistance, documentList)" autocomplete="off">
         </div>
     <ul class="list-group" id="document-list">
     </ul>
