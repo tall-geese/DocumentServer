@@ -62,14 +62,14 @@ function createListItem(documentRow){
 
     // Creating the Image portion
     var iconDiv = document.createElement('div');
-    iconDiv.className += 'li-icon'
+    iconDiv.className += 'li-icon';
 
     var iconAnchor = document.createElement('a');
     iconAnchor.setAttribute("href", "static/git.pdf");
     iconAnchor.setAttribute("target", "_blank");
 
     var iconImg = document.createElement('img');
-    switch(documentRow[6].split('.')[1]){
+    switch(documentRow[19].split('.')[1]){
         case 'pdf':
             iconImg.setAttribute("src", "static/images/pdf-icon.png");
             break;
@@ -93,22 +93,22 @@ function createListItem(documentRow){
 
     // Creating the WI-name div
     var wiNameDiv = document.createElement('div');
-    wiNameDiv.className += "WI-name"
+    wiNameDiv.className += "WI-name";
 
     nameSmall = document.createElement('small');
-    nameSmall.textContent += documentRow[1];
+    nameSmall.textContent += documentRow[0];
 
     wiNameDiv.appendChild(nameSmall);
 
     // Create the label for the Doc ID
     var wiLabelDiv = document.createElement('div');
-    wiLabelDiv.className += "WI-label"
+    wiLabelDiv.className += "WI-label";
     
     wiLabel = document.createElement('label');
     wiLabel.setAttribute("for", "WI-82-001");
 
     wiLabelHeader = document.createElement("h6");
-    wiLabelHeader.textContent += documentRow[2];
+    wiLabelHeader.textContent += documentRow[1];
 
     wiLabel.appendChild(wiLabelHeader);
     wiLabelDiv.appendChild(wiLabel);
