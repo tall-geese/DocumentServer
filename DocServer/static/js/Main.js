@@ -11,8 +11,8 @@ function getInput(getEditDistance, documentList){
     }
 
     if (searchValue.length >= 2){
-        const DOC_NUM = 1;
-        const DOC_NAME = 2;
+        const DOC_NUM = 0;
+        const DOC_NAME = 1;
         var compareField;
 
         switch(searchValue.substr(0,2).toUpperCase()){
@@ -53,7 +53,7 @@ function getInput(getEditDistance, documentList){
 }
 
 function createListItem(documentRow){
-
+    
     myUL = document.getElementById("document-list");
 
     li = document.createElement('li');
@@ -69,7 +69,7 @@ function createListItem(documentRow){
     iconAnchor.setAttribute("target", "_blank");
 
     var iconImg = document.createElement('img');
-    switch(documentRow[19].split('.')[1]){
+    switch(documentRow[15].split('.')[1]){
         case 'pdf':
             iconImg.setAttribute("src", "static/images/pdf-icon.png");
             break;
