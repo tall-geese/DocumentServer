@@ -11,8 +11,12 @@ function getInput(getEditDistance, documentList){
     }
 
     if (searchValue.length >= 2){
-        const DOC_NUM = 0;
-        const DOC_NAME = 1;
+        // test database DOC_NUM = 1
+        // IQS database DOC_NUM = 0
+        const DOC_NUM = 1;
+        // test database DOC_NAME = 2
+        // IQS database DOC_NAME = 1
+        const DOC_NAME = 2;
         var compareField;
 
         switch(searchValue.substr(0,2).toUpperCase()){
@@ -33,16 +37,12 @@ function getInput(getEditDistance, documentList){
 
 
         documentList.sort( (a,b) =>{
-            // console.log(a[2] + ' ' + getEditDistance(searchValue, a[2].substr(1,searchValue.length)) + '   ' + b[2] + ' ' +
-            // getEditDistance(searchValue, b[2].substr(1,searchValue.length)));
-
 
             return getEditDistance(searchValue, a[compareField].substr(0,searchValue.length)) - 
             getEditDistance(searchValue, b[compareField].substr(0,searchValue.length));
         });
 
         documentList.forEach(element => {
-            // console.log(searchValue + 'search');
            if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < 5){
                createListItem(element);
                 rowCount++;
@@ -53,6 +53,7 @@ function getInput(getEditDistance, documentList){
 }
 
 function createListItem(documentRow){
+
     
     myUL = document.getElementById("document-list");
 
@@ -69,7 +70,10 @@ function createListItem(documentRow){
     iconAnchor.setAttribute("target", "_blank");
 
     var iconImg = document.createElement('img');
-    switch(documentRow[15].split('.')[1]){
+    // test databse documentRow[6]
+    // IQS database documentRow[15]
+    console.log(documentRow[6]);
+    switch(documentRow[6].split('.')[1]){
         case 'pdf':
             iconImg.setAttribute("src", "static/images/pdf-icon.png");
             break;
@@ -96,7 +100,9 @@ function createListItem(documentRow){
     wiNameDiv.className += "WI-name";
 
     nameSmall = document.createElement('small');
-    nameSmall.textContent += documentRow[0];
+    // test database documentRow[1]
+    // IQS database documentRow[0]
+    nameSmall.textContent += documentRow[1];
 
     wiNameDiv.appendChild(nameSmall);
 
@@ -108,7 +114,9 @@ function createListItem(documentRow){
     wiLabel.setAttribute("for", "WI-82-001");
 
     wiLabelHeader = document.createElement("h6");
-    wiLabelHeader.textContent += documentRow[1];
+    // test database documentRow[2]
+    // IQS database documentRow[1]
+    wiLabelHeader.textContent += documentRow[2];
 
     wiLabel.appendChild(wiLabelHeader);
     wiLabelDiv.appendChild(wiLabel);
