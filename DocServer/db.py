@@ -12,9 +12,9 @@ def testConnection_Lin(app) -> list:
 
     # Home Test Database SQL string
     proxyAllDocs = conn.execute('SELECT Doc_ID, Doc_Num, Doc_Name, Doc_Type, Revision, Doc_Status, File_Path FROM dbo.PT_QC_Doc').fetchall()
-    # proxyAllDocs = conn.execute(
-
+    
     # Jade76 IQS Sql Call
+    # proxyAllDocs = conn.execute(
 #         """
 #         SELECT src.DOCUMENT_ID [Doc_Num], max(src.NAME) [Doc_Name], max(dt.NAME) [Doc_Type], min(src.state) [Doc_Status],  
 # (UPPER((SUBSTRING(max(em.FIRST_NAME) , 1, 1) +  max(em.LAST_NAME)))) [Doc_Manager] , 'Yes' [ForceRevControl], SRC.REVISION_LEVEL [Revision],

@@ -80,12 +80,24 @@ function createListItem(documentRow){
         case 'docx':
             iconImg.setAttribute("src", "static/images/word-doc-icon.png");
             break;
+        case 'doc':
+            iconImg.setAttribute("src", "static/images/word-doc-icon.png");
+            break;
+        case 'dotm':
+            iconImg.setAttribute("src", "static/images/word-doc-icon.png");
+            break;
         case 'xlsm':
             iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
             break;
         case 'xlsx':
             iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
             break;
+        case 'xls':
+        iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
+        break;
+        case 'pptx':
+        iconImg.setAttribute("src", "static/images/ppt-icon.png");
+        break;
         default:
             iconImg.setAttribute("src", "static/images/pdf-icon.png");
     }
