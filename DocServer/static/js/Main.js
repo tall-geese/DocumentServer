@@ -66,8 +66,10 @@ function createListItem(documentRow){
     iconDiv.className += 'li-icon';
 
     var iconAnchor = document.createElement('a');
-    iconAnchor.setAttribute("href", "static/git.pdf");
+    iconAnchor.setAttribute("href", documentRow[6]);
     iconAnchor.setAttribute("target", "_blank");
+    // iconAnchor.setAttribute("href", "static/git.pdf");
+    // iconAnchor.setAttribute("target", "_blank");
 
     var iconImg = document.createElement('img');
     // test databse documentRow[6]

@@ -2,7 +2,7 @@
     # set/export FLASK_APP=DocServer
     # set/export FLASK_ENV=development
     # set/export DEVELOPMENT=1
-    # set/export FLASK_RUN_PORT=8080
+    # set/export FLASK_RUN_PORT=8080   <--- port 8080 forbidden on J76
 
 from flask import Flask, url_for, render_template, render_template_string
 import DocServer.db as db
