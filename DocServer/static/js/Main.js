@@ -1,4 +1,5 @@
 
+
 function getInput(getEditDistance, documentList){
     var inputField = document.getElementById('document-input');
     searchValue = inputField.value;
@@ -142,4 +143,9 @@ function createListItem(documentRow){
 
     // append the list element to the unordered list
     myUL.appendChild(li)
+}
+
+function openWindow() {
+    // window.open("C:\\uniPoint_Vault\\JPMC_TEST_UP\\Doc_Control\\SAMPLE 3\\SAMPLE 3_A.pptx", "_self");
+
 }
