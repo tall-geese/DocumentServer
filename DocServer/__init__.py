@@ -2,47 +2,31 @@
     # set/export FLASK_APP=DocServer
     # set/export FLASK_ENV=development
     # set/export DEVELOPMENT=1
-    # set/export FLASK_RUN_PORT=8080   <--- port 8080 forbidden on J76
+    # set/export FLASK_RUN_PORT=8080   <--- port 8080 forbidden on J76, occupied by former doc viewer
 
 from flask import Flask, url_for, render_template, render_template_string, Response, send_file, abort, redirect
 import DocServer.db as db
-import os
-# import db
 
 def create_app():
     app = Flask('DocServer')
-    app.config.from_pyfile('configurations/testing_config.py')
-    # app.config.from_pyfile('configurations/production_config.py')
-    
+    app.config.from_pyfile('configurations/testing_config.py')  #IQS server
+    # app.config.from_pyfile('configurations/production_config.py')   #Unipoint Server
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-    documents = db.testConnection_Lin(app)
 
     @app.route('/')
     def index():
-        fileList = os.listdir(app.config.get('UNIPOINT_FILE_DIR'))
-        fileList.extend([app.config.get('UNIPOINT_FILE_DIR')+'\\SAMPLE 1_A.docx'])
-        return render_template('index.html', documents=documents, something=fileList)
+        documents = db.testConnection_Lin(app)
+        return render_template('index.html', documents=documents)
 
-    @app.route('/sample.git')
-    def generate_file():
+    @app.route('/documents/<path:subpath>')
+    def generate_file(subpath):
         try:
-            return send_file(app.config.get('UNIPOINT_FILE_DIR')+'\\Git.pdf', as_attachment=True)
+            print(subpath)
+            return send_file(app.config.get('UNIPOINT_FILE_DIR') + subpath, as_attachment=False)
         except FileNotFoundError:
             abort(404)
         return redirect('/')
-        
 
-    
-    # def generate_large_csv():
-    #     def generate():
-    #         yield 'This is a sample file'
-    #     return Response(generate(), mimetype='text/csv')
 
     return app
-
-# if __name__ == ('__main__'):
-#     print('hit main')
-#     create_app()
-
-
-

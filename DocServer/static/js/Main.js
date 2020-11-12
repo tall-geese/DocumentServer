@@ -1,4 +1,12 @@
 
+// In the order of fields that we care about:  
+//     DOC_NUM, DOC_NAME, File_Path, Revison
+var unipointProductionIndex = [1,2,6,4];
+var iqsTestIndex = [0,1,15,6];
+
+// Switch here for testing vs production code
+var columnIndex = iqsTestIndex;
+
 
 function getInput(getEditDistance, documentList){
     var inputField = document.getElementById('document-input');
@@ -12,49 +20,106 @@ function getInput(getEditDistance, documentList){
     }
 
     if (searchValue.length >= 2){
-        // test database DOC_NUM = 1
-        // IQS database DOC_NUM = 0
-        const DOC_NUM = 1;
-        // test database DOC_NAME = 2
-        // IQS database DOC_NAME = 1
-        const DOC_NAME = 2;
         var compareField;
 
-        switch(searchValue.substr(0,2).toUpperCase()){
-            case 'PR':
-            case 'FO':
-            case 'WI':
-            case 'VD':
-            case 'SA':
-            case 'RE':
-            case 'TG':
-            case 'QM':
-            case 'JD':
-                compareField = DOC_NUM;
-                break;
-            default:
-                compareField = DOC_NAME;
+        if (searchValue.length == 2) {
+            console.log('hit the 2 char only');
+            switch(searchValue.toUpperCase()){
+                case 'PR':
+                case 'FO':
+                case 'WI':
+                case 'VD':
+                case 'SA':
+                case 'RE':
+                case 'TG':
+                case 'QM':
+                case 'JD':
+                    compareField = columnIndex[0];
+                    break;
+                default:
+                    compareField = columnIndex[1];
+            }            
+        } else if (searchValue.indexOf('-') !== -1) {
+            compareField = columnIndex[0];
+            console.log('hit the - doc_num one');
+        } else {
+            compareField = columnIndex[1];
+            console.log('hit the doc_name one')
         }
 
 
-        documentList.sort( (a,b) =>{
+        if (compareField == columnIndex[1]){
+        orderList = [];
 
-            return getEditDistance(searchValue, a[compareField].substr(0,searchValue.length)) - 
-            getEditDistance(searchValue, b[compareField].substr(0,searchValue.length));
-        });
+            documentList.forEach((element, index) => {
+                var leastDistance = 100;
+                
+                element[compareField].split(" ").forEach(word =>{
+                    var distance = getEditDistance(searchValue, word.substring(0,searchValue.length));
+                    if (distance < leastDistance){
+                        leastDistance = distance;
+                    } 
+                });
+                orderList.push([index, leastDistance]);
+            });
 
-        documentList.forEach(element => {
-           if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < 5){
-               createListItem(element);
+            //TODO: in addition to this sorting by the leven distance, maybe we can create a sub-list out of
+            // the first 5 items (or however many it has) and sort alphabetically or by the document number alphatbetically
+            // but only rearrange in groups of equal levenshtein distance
+            orderList.sort( (a,b) =>{
+                return a[1] - b[1];
+            });
+
+            orderList.forEach(element =>{
+                if (element[1] <= 1 && rowCount < 5){
+                    console.log(documentList[element[0]][1] + ' index:' + element[0] + ' edit dist:' + element[1])
+                    createListItem(documentList[element[0]]);
+                    rowCount++;
+                } 
+            });
+
+        } else if (compareField == columnIndex[0]) {
+            documentList.sort( (a,b) =>{
+                return getEditDistance(searchValue, a[compareField].substr(0,searchValue.length)) - 
+                getEditDistance(searchValue, b[compareField].substr(0,searchValue.length));
+            });
+
+            //TODO: like above, even after we factor out doc numbers that we don't want by their edit distance,
+            // we should still sort these alphabetically
+
+            // ok there should be no need to sort the documents further, since its captured by the "ORDER BY clause"
+
+            documentList.forEach(element => {
+            if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < 5){
+                createListItem(element);
                 rowCount++;
-           }
+                console.log(element[compareField] + 'index: ' + getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)));
+            }           
+            });
+        }
+
+    //     // TODO: put an if/else here, we can keep the normal process if we are using the Doc_ID,
+    //     // but if we are using the Doc_Name then we need a way to split and compare each word of the Doc_Name
+    //     // to the search field.
+    //     documentList.sort( (a,b) =>{
+    //         // sort our list of documents by comparing the first x characters of the desired 
+    //         // field (doc_name or doc_num) to the search string where x is the 
+    //         // length of the search string
+    //         return getEditDistance(searchValue, a[compareField].substr(0,searchValue.length)) - 
+    //         getEditDistance(searchValue, b[compareField].substr(0,searchValue.length));
+    //     });
+
+    //     documentList.forEach(element => {
+    //        if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < 5){
+    //            createListItem(element);
+    //             rowCount++;
+    //        }
            
-        });
+    //     });
     }
 }
 
 function createListItem(documentRow){
-
     
     myUL = document.getElementById("document-list");
 
@@ -67,16 +132,29 @@ function createListItem(documentRow){
     iconDiv.className += 'li-icon';
 
     var iconAnchor = document.createElement('a');
-    iconAnchor.setAttribute("href", documentRow[6]);
+    escapedString = documentRow[columnIndex[2]].replace(/\\/g,'/'); 
+
+    // In the SQL query we're asking to pull the file location for the pdf
+    // attachment if the document has one. Here we are splitting the string 
+    // differently becuase the directories for documents and attachments are not common
+    if (documentRow[columnIndex[2]].indexOf('Attachments') == -1) {
+        iconAnchor.setAttribute("href", '/documents/Doc_Control/' + escapedString.split('Doc_Control/')[1]);
+        // console.log('/documents/Doc_Control/' + escapedString.split('Doc_Control/')[1]);
+        
+    } else {
+        iconAnchor.setAttribute("href", '/documents/Attachments/' + escapedString.split('Attachments/')[1]);
+        // console.log('/documents/Attachments/' + escapedString.split('Attachments/')[1]);
+    }
+
     iconAnchor.setAttribute("target", "_blank");
     // iconAnchor.setAttribute("href", "static/git.pdf");
     // iconAnchor.setAttribute("target", "_blank");
 
     var iconImg = document.createElement('img');
+
     // test databse documentRow[6]
-    // IQS database documentRow[15]
-    console.log(documentRow[6]);
-    switch(documentRow[6].split('.')[1]){
+    // IQS database documentRow[15]    
+    switch(documentRow[columnIndex[2]].split('.')[1]){
         case 'pdf':
             iconImg.setAttribute("src", "static/images/pdf-icon.png");
             break;
@@ -96,11 +174,11 @@ function createListItem(documentRow){
             iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
             break;
         case 'xls':
-        iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
-        break;
+            iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
+            break;
         case 'pptx':
-        iconImg.setAttribute("src", "static/images/ppt-icon.png");
-        break;
+            iconImg.setAttribute("src", "static/images/ppt-icon.png");
+            break;
         default:
             iconImg.setAttribute("src", "static/images/pdf-icon.png");
     }
@@ -117,7 +195,7 @@ function createListItem(documentRow){
     nameSmall = document.createElement('small');
     // test database documentRow[1]
     // IQS database documentRow[0]
-    nameSmall.textContent += documentRow[1];
+    nameSmall.textContent += documentRow[columnIndex[0]];
 
     wiNameDiv.appendChild(nameSmall);
 
@@ -131,15 +209,27 @@ function createListItem(documentRow){
     wiLabelHeader = document.createElement("h6");
     // test database documentRow[2]
     // IQS database documentRow[1]
-    wiLabelHeader.textContent += documentRow[2];
+    wiLabelHeader.textContent += documentRow[columnIndex[1]];
 
     wiLabel.appendChild(wiLabelHeader);
     wiLabelDiv.appendChild(wiLabel);
+
+
+    wiRevDiv = document.createElement('div');
+    wiRevDiv.className += 'WI-rev';
+    
+    revSmall = document.createElement('small');
+    // test database documentRow[4]
+    // IQS database documentRow[6]
+    revSmall.textContent += 'Rev' + documentRow[columnIndex[3]];
+    wiRevDiv.appendChild(revSmall);
+    
 
     // Append our created subdivisions to the list element
     li.appendChild(iconDiv);
     li.appendChild(wiNameDiv);
     li.appendChild(wiLabelDiv);
+    li.appendChild(wiRevDiv);
 
     // append the list element to the unordered list
     myUL.appendChild(li)
