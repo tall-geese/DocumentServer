@@ -5,13 +5,13 @@ var unipointProductionIndex = [1,2,6,4];
 var iqsTestIndex = [0,1,15,6];
 
 // Switch here for testing vs production code
-var columnIndex = iqsTestIndex;
+var columnIndex = unipointProductionIndex;
 
 
 function getInput(getEditDistance, documentList){
     var inputField = document.getElementById('document-input');
-    searchValue = inputField.value;
-    
+    searchValue = inputField.value.trim();
+
     var rowCount = 0;
 
     var ul = document.getElementById('document-list');
@@ -23,7 +23,6 @@ function getInput(getEditDistance, documentList){
         var compareField;
 
         if (searchValue.length == 2) {
-            console.log('hit the 2 char only');
             switch(searchValue.toUpperCase()){
                 case 'PR':
                 case 'FO':
@@ -41,26 +40,31 @@ function getInput(getEditDistance, documentList){
             }            
         } else if (searchValue.indexOf('-') !== -1) {
             compareField = columnIndex[0];
-            console.log('hit the - doc_num one');
         } else {
             compareField = columnIndex[1];
-            console.log('hit the doc_name one')
         }
 
 
         if (compareField == columnIndex[1]){
-        orderList = [];
+            
+            orderList = [];
+
 
             documentList.forEach((element, index) => {
-                var leastDistance = 100;
-                
-                element[compareField].split(" ").forEach(word =>{
-                    var distance = getEditDistance(searchValue, word.substring(0,searchValue.length));
-                    if (distance < leastDistance){
-                        leastDistance = distance;
-                    } 
+                var searchWordTotalLeastDist = 0;
+                searchValue.split(' ').forEach(searchWord =>{
+                    if (searchWord.length > 1){
+                        var docWordLeastDist = 100;                        
+                        element[compareField].split(' ').forEach(documentWord =>{
+                            var distance = getEditDistance(searchWord, documentWord.substring(0,searchWord.length));
+                            if (distance < docWordLeastDist){
+                                docWordLeastDist = distance;
+                            } 
+                        });
+                        searchWordTotalLeastDist += docWordLeastDist; 
+                    }
                 });
-                orderList.push([index, leastDistance]);
+                orderList.push([index, searchWordTotalLeastDist]);
             });
 
             //TODO: in addition to this sorting by the leven distance, maybe we can create a sub-list out of
@@ -72,7 +76,7 @@ function getInput(getEditDistance, documentList){
 
             orderList.forEach(element =>{
                 if (element[1] <= 1 && rowCount < 5){
-                    console.log(documentList[element[0]][1] + ' index:' + element[0] + ' edit dist:' + element[1])
+                    // console.log(documentList[element[0]][1] + ' index:' + element[0] + ' edit dist:' + element[1])
                     createListItem(documentList[element[0]]);
                     rowCount++;
                 } 
@@ -93,7 +97,7 @@ function getInput(getEditDistance, documentList){
             if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < 5){
                 createListItem(element);
                 rowCount++;
-                console.log(element[compareField] + 'index: ' + getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)));
+                // console.log(element[compareField] + 'index: ' + getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)));
             }           
             });
         }
@@ -124,7 +128,8 @@ function createListItem(documentRow){
     myUL = document.getElementById("document-list");
 
     li = document.createElement('li');
-    li.className += 'list-group-item';
+    li.className += 'animated fadeInUp faster list-group-item';
+    //TODO get rid of this
     li.id += 'WI-82-001';
 
     // Creating the Image portion

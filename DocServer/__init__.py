@@ -9,7 +9,7 @@ import DocServer.db as db
 
 def create_app():
     app = Flask('DocServer')
-    app.config.from_pyfile('configurations/testing_config.py')  #IQS server
+    app.config.from_pyfile('configurations/testing_config.py')  #IQS server / Unipoint Test Server
     # app.config.from_pyfile('configurations/production_config.py')   #Unipoint Server
     app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
