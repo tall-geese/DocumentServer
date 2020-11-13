@@ -6,9 +6,9 @@ def testConnection_Lin(app) -> list:
     if not (isinstance(app, Flask)):
         pass
     # eng = create_engine(app.config.get('CONNECTION_STRING_LINUX'))
-    eng = create_engine(app.config.get('CONNECTION_STRING_WINDOWS'))
+    # eng = create_engine(app.config.get('CONNECTION_STRING_WINDOWS'))
     # eng = create_engine(app.config.get('CONNECTION_STRING_76'))
-    # eng = create_engine(app.config.get('CONNECTION_STRING_UNIPOINT_TEST'))
+    eng = create_engine(app.config.get('CONNECTION_STRING_UNIPOINT_TEST'))
     
     conn = eng.connect()
 
@@ -31,29 +31,29 @@ def testConnection_Lin(app) -> list:
 
     #     """
     # ).fetchall()
-    # proxyAllDocs = conn.execute(
-    #     """
-    #     SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     FULL OUTER JOIN (Select pqd.Doc_ID
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-    #     Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF') src on pqd.Doc_ID = src.Doc_ID
-    #     WHERE pqd.Doc_Num like '%Sample%' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
-    #     UNION ALL
-    #     Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-    #     Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF'
-    #     ORDER BY pqd.Doc_Num 
+    proxyAllDocs = conn.execute(
+        """
+        SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
+        FROM dbo.PT_QC_Doc pqd 
+        FULL OUTER JOIN (Select pqd.Doc_ID
+        FROM dbo.PT_QC_Doc pqd 
+        Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
+        Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF') src on pqd.Doc_ID = src.Doc_ID
+        WHERE pqd.Doc_Num like '%Sample%' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
+        UNION ALL
+        Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
+        FROM dbo.PT_QC_Doc pqd 
+        Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
+        Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF'
+        ORDER BY pqd.Doc_Num 
 
-    #     """
-    # ).fetchall()
+        """
+    ).fetchall()
 
 
 
     # Home Test Database SQL string
-    proxyAllDocs = conn.execute('SELECT Doc_ID, Doc_Num, Doc_Name, Doc_Type, Revision, Doc_Status, File_Path FROM dbo.PT_QC_Doc').fetchall()
+    # proxyAllDocs = conn.execute('SELECT Doc_ID, Doc_Num, Doc_Name, Doc_Type, Revision, Doc_Status, File_Path FROM dbo.PT_QC_Doc').fetchall()
     
 
 
@@ -91,7 +91,16 @@ def testConnection_Lin(app) -> list:
 #     ).fetchall()
 
     documents = []
-    for row in proxyAllDocs: documents.append(row.values())
+    for row in proxyAllDocs:
+        proxyList = row.values()
+
+        # some document names contain ','s in them and cause errors when we end up splitting by 
+        # these later on. Temp replacing them with ^ here and switching back later after we split in arrays
+        # Removing the '-' here to differentiate between searching for a doc name and searching for a doc_id
+        # in main.js we will auto search by the doc_id if the user ever enters a '-'
+        proxyList[2] = proxyList[2].replace(',','^')
+        proxyList[2] = proxyList[2].replace('-',' ')
+        documents.append(proxyList)
     conn.close()
 
     # TODO: We should try and clean the fields for any ',' in the values, is there any way to do this through the SQL select??

@@ -24,6 +24,7 @@
             documentRow = documentRow.substr(1, documentRow.length - 2);
             documentRow = documentRow.replace(/\"/g, '');
             documentArray = documentRow.split(',');
+            documentArray[2] = documentArray[2].replace(/\^/g, ',')
 
             documentArray.forEach( (element, index, array) => {
                 documentArray[index] = documentArray[index].trim();
