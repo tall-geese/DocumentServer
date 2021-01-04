@@ -7,6 +7,9 @@ var iqsTestIndex = [0,1,15,6];
 // Switch here for testing vs production code
 var columnIndex = unipointProductionIndex;
 
+// Maximum number of result rows to return when searching
+var maximumResults = 20;
+
 
 function getInput(getEditDistance, documentList){
     var inputField = document.getElementById('document-input');
@@ -40,6 +43,8 @@ function getInput(getEditDistance, documentList){
             }            
         } else if (searchValue.indexOf('-') !== -1) {
             compareField = columnIndex[0];
+            // TODO: does this capture a phrase where people search by half of a doc_ID
+            // like 82-001 ?
         } else {
             compareField = columnIndex[1];
         }
@@ -75,7 +80,8 @@ function getInput(getEditDistance, documentList){
             });
 
             orderList.forEach(element =>{
-                if (element[1] <= 1 && rowCount < 5){
+                // if (element[1] <= 1 && rowCount < maximumResults){
+                if (element[1] <= 1){
                     // console.log(documentList[element[0]][1] + ' index:' + element[0] + ' edit dist:' + element[1])
                     createListItem(documentList[element[0]]);
                     rowCount++;
@@ -88,13 +94,13 @@ function getInput(getEditDistance, documentList){
                 getEditDistance(searchValue, b[compareField].substr(0,searchValue.length));
             });
 
-            //TODO: like above, even after we factor out doc numbers that we don't want by their edit distance,
-            // we should still sort these alphabetically
-
-            // ok there should be no need to sort the documents further, since its captured by the "ORDER BY clause"
+            //TODO: In addition, if the two results show the same,
+                // like both documents contain the word 'Inspection' against the search word 'inspection'
+                // then we should automatically prioritize the document name that is of shorter length
 
             documentList.forEach(element => {
-            if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < 5){
+            // if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < maximumResults){
+            if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1){
                 createListItem(element);
                 rowCount++;
                 // console.log(element[compareField] + 'index: ' + getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)));

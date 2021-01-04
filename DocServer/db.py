@@ -8,9 +8,30 @@ def testConnection_Lin(app) -> list:
     # eng = create_engine(app.config.get('CONNECTION_STRING_LINUX'))
     # eng = create_engine(app.config.get('CONNECTION_STRING_WINDOWS'))
     # eng = create_engine(app.config.get('CONNECTION_STRING_76'))
-    eng = create_engine(app.config.get('CONNECTION_STRING_UNIPOINT_TEST'))
+    # eng = create_engine(app.config.get('CONNECTION_STRING_UNIPOINT_TEST'))
+    eng = create_engine(app.config.get('CONNECTION_STRING_UNIPOINT'))
     
     conn = eng.connect()
+
+    # Unipoint production connection string
+    proxyAllDocs = conn.execute(
+        """
+        SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
+        FROM dbo.PT_QC_Doc pqd 
+        FULL OUTER JOIN (Select pqd.Doc_ID
+        FROM dbo.PT_QC_Doc pqd 
+        Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
+        Where pta.AttachType = 'Document PDF' and pta.AttachOrigin = 'Document') src on pqd.Doc_ID = src.Doc_ID
+        WHERE pqd.Doc_Status = 'Active' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
+        UNION ALL
+        Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
+        FROM dbo.PT_QC_Doc pqd 
+        Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
+        Where pta.AttachType = 'Document PDF' AND pqd.Doc_Status ='Active' and AttachOrigin = 'Document'
+        ORDER BY pqd.Doc_Num
+
+        """
+    ).fetchall()
 
     # Unipoint test database connection string
     # proxyAllDocs = conn.execute(
@@ -31,24 +52,26 @@ def testConnection_Lin(app) -> list:
 
     #     """
     # ).fetchall()
-    proxyAllDocs = conn.execute(
-        """
-        SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
-        FROM dbo.PT_QC_Doc pqd 
-        FULL OUTER JOIN (Select pqd.Doc_ID
-        FROM dbo.PT_QC_Doc pqd 
-        Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-        Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF') src on pqd.Doc_ID = src.Doc_ID
-        WHERE pqd.Doc_Num like '%Sample%' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
-        UNION ALL
-        Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
-        FROM dbo.PT_QC_Doc pqd 
-        Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-        Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF'
-        ORDER BY pqd.Doc_Num 
+    # proxyAllDocs = conn.execute(
+    #     """
+    #     SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
+    #     FROM dbo.PT_QC_Doc pqd 
+    #     FULL OUTER JOIN (Select pqd.Doc_ID
+    #     FROM dbo.PT_QC_Doc pqd 
+    #     Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
+    #     Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF') src on pqd.Doc_ID = src.Doc_ID
+    #     WHERE pqd.Doc_Num like '%Sample%' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
+    #     UNION ALL
+    #     Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
+    #     FROM dbo.PT_QC_Doc pqd 
+    #     Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
+    #     Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF'
+    #     ORDER BY pqd.Doc_Num 
 
-        """
-    ).fetchall()
+    #     """
+    # ).fetchall()
+
+    
 
 
 
@@ -57,7 +80,7 @@ def testConnection_Lin(app) -> list:
     
 
 
-    # Jade76 IQS Sql Call
+    # Jade76 IQS Sql Call   (for testing with results from the IQS database)
 #     proxyAllDocs = conn.execute(
 #         """
 #         SELECT src.DOCUMENT_ID [Doc_Num], max(src.NAME) [Doc_Name], max(dt.NAME) [Doc_Type], min(src.state) [Doc_Status],  
@@ -94,8 +117,8 @@ def testConnection_Lin(app) -> list:
     for row in proxyAllDocs:
         proxyList = row.values()
 
-        # some document names contain ','s in them and cause errors when we end up splitting by 
-        # these later on. Temp replacing them with ^ here and switching back later after we split in arrays
+        # some document names contain ','s in them and cause errors when we end up splitting by this char
+        # later on. Temp replacing them with ^ here and switching back later after we split in arrays
         # Removing the '-' here to differentiate between searching for a doc name and searching for a doc_id
         # in main.js we will auto search by the doc_id if the user ever enters a '-'
         proxyList[2] = proxyList[2].replace(',','^')
