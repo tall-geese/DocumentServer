@@ -2,7 +2,7 @@ from sqlalchemy.engine import Engine, create_engine, Connection, ResultProxy, ur
 from flask import Flask
 
 
-def testConnection_Lin(app) -> list:
+def testConnection_Lin(app,ogDocType) -> list:
     if not (isinstance(app, Flask)):
         pass
     # eng = create_engine(app.config.get('CONNECTION_STRING_LINUX'))
@@ -13,72 +13,36 @@ def testConnection_Lin(app) -> list:
     
     conn = eng.connect()
 
-    # Unipoint production connection string
-    proxyAllDocs = conn.execute(
-        """
-        SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
-        FROM dbo.PT_QC_Doc pqd 
-        FULL OUTER JOIN (Select pqd.Doc_ID
-        FROM dbo.PT_QC_Doc pqd 
-        Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-        Where pta.AttachType = 'Document PDF' and pta.AttachOrigin = 'Document') src on pqd.Doc_ID = src.Doc_ID
-        WHERE pqd.Doc_Status = 'Active' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
-        UNION ALL
-        Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
-        FROM dbo.PT_QC_Doc pqd 
-        Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-        Where pta.AttachType = 'Document PDF' AND pqd.Doc_Status ='Active' and AttachOrigin = 'Document'
-        ORDER BY pqd.Doc_Num
-
-        """
-    ).fetchall()
-
-    # Unipoint test database connection string
-    # proxyAllDocs = conn.execute(
-    #     """
-    #     SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     FULL OUTER JOIN (Select pqd.Doc_ID
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-    #     Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF') src on pqd.Doc_ID = src.Doc_ID
-    #     WHERE pqd.Doc_Num like '%Sample%' AND pqd.Doc_Status = 'Active' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
-    #     UNION ALL
-    #     Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-    #     Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF' AND pqd.Doc_Status ='Active'
-    #     ORDER BY pqd.Doc_Num 
-
-    #     """
-    # ).fetchall()
-    # proxyAllDocs = conn.execute(
-    #     """
-    #     SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     FULL OUTER JOIN (Select pqd.Doc_ID
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-    #     Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF') src on pqd.Doc_ID = src.Doc_ID
-    #     WHERE pqd.Doc_Num like '%Sample%' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
-    #     UNION ALL
-    #     Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
-    #     FROM dbo.PT_QC_Doc pqd 
-    #     Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
-    #     Where pta.AttachPath like '%Sample%' and pta.AttachType = 'Document PDF'
-    #     ORDER BY pqd.Doc_Num 
-
-    #     """
-    # ).fetchall()
+     # Unipoint production connection string
+    if ogDocType == True:
+        UPquery = """
+            SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
+            FROM dbo.PT_QC_Doc pqd 
+            """
+    else:
+        UPquery = """
+            SELECT pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pqd.File_Path
+            FROM dbo.PT_QC_Doc pqd 
+            FULL OUTER JOIN (Select pqd.Doc_ID
+            FROM dbo.PT_QC_Doc pqd 
+            Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
+            Where pta.AttachType = 'Document PDF' and pta.AttachOrigin = 'Document') src on pqd.Doc_ID = src.Doc_ID
+            WHERE pqd.Doc_Status = 'Active' AND (pqd.Doc_ID IS NULL OR src.Doc_ID IS NULL)
+            UNION ALL
+            Select pqd.Doc_ID, pqd.Doc_Num, pqd.Doc_Name, pqd.Doc_Type, pqd.Revision, pqd.Doc_Status, pta.AttachPath
+            FROM dbo.PT_QC_Doc pqd 
+            Inner Join dbo.PT_Attach pta ON pqd.Doc_ID = pta.AttachReference 
+            Where pta.AttachType = 'Document PDF' AND pqd.Doc_Status ='Active' and AttachOrigin = 'Document'
+            ORDER BY pqd.Doc_Num
+            """
 
     
-
-
+   
+    proxyAllDocs = conn.execute(UPquery).fetchall()
 
     # Home Test Database SQL string
     # proxyAllDocs = conn.execute('SELECT Doc_ID, Doc_Num, Doc_Name, Doc_Type, Revision, Doc_Status, File_Path FROM dbo.PT_QC_Doc').fetchall()
     
-
 
     # Jade76 IQS Sql Call   (for testing with results from the IQS database)
 #     proxyAllDocs = conn.execute(
@@ -126,7 +90,7 @@ def testConnection_Lin(app) -> list:
         documents.append(proxyList)
     conn.close()
 
-    # TODO: We should try and clean the fields for any ',' in the values, is there any way to do this through the SQL select??
+    # TODO: clean the fields for any ',' in the values, ideally through the sql query
 
     return documents
 

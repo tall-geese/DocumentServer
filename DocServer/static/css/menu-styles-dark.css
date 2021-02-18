@@ -1,0 +1,148 @@
+hr {
+    width: 100%;
+    height: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    background-color: #b7d0e2;
+    border: 0 none;
+  }
+
+#menu-open-btn{
+    display: block;
+    background-color: rgb(29, 106, 141);
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+#menu-open-btn:hover{
+    background-color: rgb(1, 94, 138);
+}
+#menu-form{
+    display: none;
+    position: absolute;
+    top: 5px;
+    left:5px;
+    width: 400px;
+    min-height: 250px;
+    background-color: rgb(80,80,80);
+    /* background-color: white; */
+    border-style: outset;
+    border-width: 1px;
+    /* padding: 10px; */
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#form-div-group{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#form-div-group > div{
+    display: flex;
+    flex-direction: row;
+    padding-left: 3px;
+    width: 100%;
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+#form-div-group #menu-close-group{
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+
+#menu-close-group{
+    width: 100%;
+    margin-bottom: 20px;
+    padding-right: 5%;
+    align-items: center;
+}
+#menu-close-btn{
+    color: white;
+}
+#menu-close-btn:hover{
+    color: rgb(175, 175, 175);
+}
+#menu-close-settings{
+    margin-left: auto;
+    padding-top: 10px;
+    color: white;
+}
+#enable-saved-group{
+    margin: none;
+}
+#enable-saved-group:hover{
+    background-color: #00AEFF10;
+}
+#enable-saved-checkbox{
+    margin-left: auto;
+}
+
+
+/* Next */
+
+#enable-nonPDF-group{
+    align-content: left;
+}
+#enable-nonPDF-group:hover{
+    background-color: #00AEFF10;
+}
+
+#enable-nonPDF-label-group{
+    display: flex;
+    flex: row;
+    flex-wrap: wrap;
+    width: 70%;
+}
+
+#if-applicable-label{
+    font-size: small;
+    margin-left: 30%;
+}
+
+#enable-nonPDF-checkbox{
+    margin-left: auto;
+}
+
+#max-row-return-group:hover{
+    background-color: #00AEFF10;
+}
+
+#max-row-return-input{
+    width: 15%;
+    margin-left: auto;
+}
+
+#enable-dark-group:hover{
+    background-color: #00AEFF10;
+}
+#enable-dark-checkbox{
+    margin-left: auto;
+}
+
+#menu-save-btn-group{
+    padding-bottom: 0px;
+
+}
+#menu-save-btn{
+    width: 100%;
+}
+
+#menu-save-btn:enabled:hover{
+    color: rgb(2, 48, 70);
+}
+
+.form-label{
+    color: white;
+}
+.form-check-label{
+    color: white;
+}

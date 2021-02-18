@@ -8,14 +8,14 @@ var iqsTestIndex = [0,1,15,6];
 var columnIndex = unipointProductionIndex;
 
 // Maximum number of result rows to return when searching
-var maximumResults = 20;
 
 
-function getInput(getEditDistance, documentList){
+function getInput(getEditDistance, documentList, maxRows){
     var inputField = document.getElementById('document-input');
     searchValue = inputField.value.trim();
-
+    
     var rowCount = 0;
+    var maximumResults = Number(maxRows);
 
     var ul = document.getElementById('document-list');
     while (ul.firstChild){
@@ -80,8 +80,8 @@ function getInput(getEditDistance, documentList){
             });
 
             orderList.forEach(element =>{
-                // if (element[1] <= 1 && rowCount < maximumResults){
-                if (element[1] <= 1){
+                if (element[1] <= 1 && rowCount < maximumResults){
+                // if (element[1] <= 1){
                     // console.log(documentList[element[0]][1] + ' index:' + element[0] + ' edit dist:' + element[1])
                     createListItem(documentList[element[0]]);
                     rowCount++;
@@ -99,8 +99,8 @@ function getInput(getEditDistance, documentList){
                 // then we should automatically prioritize the document name that is of shorter length
 
             documentList.forEach(element => {
-            // if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < maximumResults){
-            if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1){
+            if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1 && rowCount < maximumResults){
+            // if (getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)) <=1){
                 createListItem(element);
                 rowCount++;
                 // console.log(element[compareField] + 'index: ' + getEditDistance(searchValue, element[compareField].substr(0,searchValue.length)));
@@ -135,66 +135,77 @@ function createListItem(documentRow){
 
     li = document.createElement('li');
     li.className += 'animated fadeInUp faster list-group-item';
-    //TODO get rid of this
+    //TODO: get rid of this
     li.id += 'WI-82-001';
 
     // Creating the Image portion
     var iconDiv = document.createElement('div');
     iconDiv.className += 'li-icon';
 
+    var iconImg = document.createElement('img');
+    var fileType = 'type='
+    switch(documentRow[columnIndex[2]].split('.')[1]){
+        case 'pdf':
+            iconImg.setAttribute("src", "static/images/pdf-icon.png");
+            fileType+='pdf'
+            break;
+        case 'docx':
+            iconImg.setAttribute("src", "static/images/word-doc-icon.png");
+            fileType+='doc'
+            break;
+        case 'doc':
+            iconImg.setAttribute("src", "static/images/word-doc-icon.png");
+            fileType+='doc'
+            break;
+        case 'dotm':
+            iconImg.setAttribute("src", "static/images/word-doc-icon.png");
+            fileType+='doc'
+            break;
+        case 'xlsm':
+            iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
+            fileType+='xl'
+            break;
+        case 'xlsx':
+            iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
+            fileType+='xl'
+            break;
+        case 'xls':
+            iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
+            fileType+='xl'
+            break;
+        case 'pptx':
+            iconImg.setAttribute("src", "static/images/ppt-icon.png");
+            fileType+='ppt'
+            break;
+        default:
+            iconImg.setAttribute("src", "static/images/pdf-icon.png");
+            fileType+='pdf'
+    }
+    iconImg.setAttribute("width", "40px");
+    iconImg.setAttribute("height", "40px");
+
     var iconAnchor = document.createElement('a');
     escapedString = documentRow[columnIndex[2]].replace(/\\/g,'/'); 
+
+    var revClause = 'rev=' + documentRow[columnIndex[3]]
+    var docNumClause = 'num=' + documentRow[columnIndex[0]]
+    var docNameClause = 'name=' + documentRow[columnIndex[1]]
+    var url_flags = revClause + '/' + docNumClause + '/' + docNameClause + '/' + fileType 
 
     // In the SQL query we're asking to pull the file location for the pdf
     // attachment if the document has one. Here we are splitting the string 
     // differently becuase the directories for documents and attachments are not common
     if (documentRow[columnIndex[2]].indexOf('Attachments') == -1) {
-        iconAnchor.setAttribute("href", '/documents/Doc_Control/' + escapedString.split('Doc_Control/')[1]);
+        iconAnchor.setAttribute("href", '/documents/' + url_flags + '/Doc_Control/' + escapedString.split('Doc_Control/')[1]);
         // console.log('/documents/Doc_Control/' + escapedString.split('Doc_Control/')[1]);
         
     } else {
-        iconAnchor.setAttribute("href", '/documents/Attachments/' + escapedString.split('Attachments/')[1]);
+        iconAnchor.setAttribute("href", '/documents/' +  url_flags + '/Attachments/' + escapedString.split('Attachments/')[1]);
         // console.log('/documents/Attachments/' + escapedString.split('Attachments/')[1]);
     }
 
     iconAnchor.setAttribute("target", "_blank");
-    // iconAnchor.setAttribute("href", "static/git.pdf");
-    // iconAnchor.setAttribute("target", "_blank");
 
-    var iconImg = document.createElement('img');
-
-    // test databse documentRow[6]
-    // IQS database documentRow[15]    
-    switch(documentRow[columnIndex[2]].split('.')[1]){
-        case 'pdf':
-            iconImg.setAttribute("src", "static/images/pdf-icon.png");
-            break;
-        case 'docx':
-            iconImg.setAttribute("src", "static/images/word-doc-icon.png");
-            break;
-        case 'doc':
-            iconImg.setAttribute("src", "static/images/word-doc-icon.png");
-            break;
-        case 'dotm':
-            iconImg.setAttribute("src", "static/images/word-doc-icon.png");
-            break;
-        case 'xlsm':
-            iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
-            break;
-        case 'xlsx':
-            iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
-            break;
-        case 'xls':
-            iconImg.setAttribute("src", "static/images/excel-xls-icon.png");
-            break;
-        case 'pptx':
-            iconImg.setAttribute("src", "static/images/ppt-icon.png");
-            break;
-        default:
-            iconImg.setAttribute("src", "static/images/pdf-icon.png");
-    }
-    iconImg.setAttribute("width", "40px");
-    iconImg.setAttribute("height", "40px");
 
     iconAnchor.appendChild(iconImg);
     iconDiv.appendChild(iconAnchor);
