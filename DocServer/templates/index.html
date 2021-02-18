@@ -86,7 +86,11 @@
         </div>
     </form>
     <div class="text-center" id="logo">
-        <img src="/static/images/arch-logo.png" class="rounded" width="650px" height="200px">
+        {% if darkTheme == 'checked'%}
+        <img src="/static/images/arch-logo-dark.png" class="rounded" width="700px" height="auto">
+        {% else %}
+        <img src="/static/images/arch-logo.png" class="rounded" width="700px" height="auto">
+        {% endif %}
     </div>
     <form id="document-form">
         <div class="form-group">

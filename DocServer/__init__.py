@@ -19,10 +19,9 @@ def create_app():
     @app.route('/', methods=['GET','POST'])
     def index():
         if request.method == 'POST':
-            print('method here is POST')
             resp = make_response(redirect(url_for('index')))
             # set cookies to form values, checkboxes won't be in the dict if they arent check off, so we're just checking they exist
-            # TODO: simplify this repeating blocks of code
+            # TODO: simplify this repeating block of code
             if 'enableSaved' in request.form:
                 resp.set_cookie('enableSaved','checked')
             else:
@@ -32,23 +31,19 @@ def create_app():
             else:
                 resp.set_cookie('noPDF','unchecked')                
             if 'darkTheme' in request.form:
-                print('we are setting dark theme here')
                 resp.set_cookie('darkTheme','checked')
             else:
                 resp.set_cookie('darkTheme','unchecked')
             resp.set_cookie('maxRows',request.form.get('maxRows'))                
 
-            # now redirect to the GET block
+            # now redirect to the GET block after setting the cookies
             return resp
 
         if request.method == 'GET':
-            print('method here is GET')
             cookies = request.cookies
-            # print(cookies)
 
             # if cookies haven't been set yet or client has cookies disabled
             if not cookies:
-                print('inside no cookie response')
                 documents = db.testConnection_Lin(app, False)
                 expires = datetime.now() + timedelta(days=365*10)
 
@@ -61,25 +56,18 @@ def create_app():
                 resp = make_response(render_template('index.html', documents=documents, enableSaved=enableSaved,
                 rows=rows, noPDF=noPDF, maxRows=maxRows, darkTheme=darkTheme, dev='disabled'))
 
-                # TODO: this can also be looped and simlpified somehow
-                resp.set_cookie('enableSaved','checked', expires=expires)
-                resp.set_cookie('rows',json.dumps([]), expires=expires)
-                resp.set_cookie('noPDF','unchecked', expires=expires)
-                resp.set_cookie('maxRows','30', expires=expires)
-                resp.set_cookie('darkTheme','unchecked', expires=expires)
-
-                # TODO: temporary, erase this later and the assigned cookie in elif
-                # tempTest = set([('a','b','c'),('d','e','f')])
-                # print(str(tempTest) + ' ' + str(type(tempTest)))
-                # resp.set_cookie('test',json.dumps(tempTest), expires=expires)
-                # In addition to setting these as cookies, we should be passing the values to jinja, for templating reasons
+                resp.set_cookie('enableSaved',enableSaved, expires=expires)
+                resp.set_cookie('rows',json.dumps(rows), expires=expires)
+                resp.set_cookie('noPDF',noPDF, expires=expires)
+                resp.set_cookie('maxRows',maxRows, expires=expires)
+                resp.set_cookie('darkTheme',darkTheme, expires=expires)
 
                 return resp
+
             # standard response
             elif ('enableSaved' in cookies and 'noPDF' in cookies and 'rows' in cookies
                 and 'maxRows' in cookies and 'darkTheme' in cookies):
-                # print('before loads')
-                # print(json.loads(cookies['rows']))
+
                 if cookies['enableSaved'] == 'checked':
                     rows = json.loads(cookies['rows'])
                 else:
@@ -98,19 +86,17 @@ def create_app():
                 documents = db.testConnection_Lin(app, ogDocType)
                 return render_template('index.html', documents=documents, enableSaved=cookies['enableSaved'],  noPDF=cookies['noPDF'],
                     rows=rows, maxRows=cookies['maxRows'], darkTheme=cookies['darkTheme'], dev=dev)
-            # TODO:else:
-                # something is wrong with cookies, remove them all, send an error code maybe?
-            
+            else:
+                print('issue here with user cookies, aborting')
+                abort(404)
 
-        # documents = db.testConnection_Lin(app)
-        # return render_template('index.html', documents=documents)
 
     @app.route('/documents/rev=<string:rev>/num=<string:num>/name=<path:name>/type=<string:ftype>/<path:subpath>')
     def generate_file(rev,num,name,ftype,subpath):
         cookies = request.cookies
         expires = datetime.now() + timedelta(days=365*10)
 
-        if 'enableSaved' in cookies:
+        if 'enableSaved' in cookies and cookies['enableSaved'] == 'checked':
             switch_file_type = {
                 'pdf':'static/images/pdf-icon.png',
                 'xl':'static/images/excel-xls-icon.png',
@@ -120,7 +106,7 @@ def create_app():
 
             row_path = '/documents/' + 'rev=' + rev + '/num=' + num + '/name=' + name + '/type=' + ftype + '/' + subpath
 
-            if cookies['enableSaved'] == 'checked' and 'rows' in cookies:
+            if 'rows' in cookies:
                 savedRows = json.loads(cookies['rows'])
                 searchedRow = [rev,num,name,switch_file_type[ftype],row_path]
 
@@ -132,7 +118,7 @@ def create_app():
                     savedRows.insert(0,searchedRow)
                 finally:
                     row_info = savedRows[:5]
-            elif cookies['enableSaved'] == 'checked' and 'rows' not in cookies:
+            else:
                 row_info = [searchedRow]
         else:
             row_info = []
