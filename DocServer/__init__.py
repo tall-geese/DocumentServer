@@ -5,7 +5,8 @@
     # set/export FLASK_RUN_PORT=8080   <--- port 8080 forbidden on J76, occupied by former doc viewer
 
 from flask import Flask, url_for, render_template, render_template_string, send_file, abort, redirect, request, make_response
-import DocServer.db as db
+# import DocServer.db as db
+import db
 from datetime import datetime, timedelta
 import json
 
@@ -20,21 +21,22 @@ def create_app():
     def index():
         if request.method == 'POST':
             resp = make_response(redirect(url_for('index')))
+            expires = datetime.now() + timedelta(days=365*10)
             # set cookies to form values, checkboxes won't be in the dict if they arent check off, so we're just checking they exist
             # TODO: simplify this repeating block of code
             if 'enableSaved' in request.form:
-                resp.set_cookie('enableSaved','checked')
+                resp.set_cookie('enableSaved','checked', expires=expires)
             else:
-                resp.set_cookie('enableSaved','unchecked')                
+                resp.set_cookie('enableSaved','unchecked', expires=expires)                
             if 'noPDF' in request.form:
-                resp.set_cookie('noPDF','checked')
+                resp.set_cookie('noPDF','checked', expires=expires)
             else:
-                resp.set_cookie('noPDF','unchecked')                
+                resp.set_cookie('noPDF','unchecked', expires=expires)                
             if 'darkTheme' in request.form:
-                resp.set_cookie('darkTheme','checked')
+                resp.set_cookie('darkTheme','checked', expires=expires)
             else:
-                resp.set_cookie('darkTheme','unchecked')
-            resp.set_cookie('maxRows',request.form.get('maxRows'))                
+                resp.set_cookie('darkTheme','unchecked', expires=expires)
+            resp.set_cookie('maxRows',request.form.get('maxRows'), expires=expires)                
 
             # now redirect to the GET block after setting the cookies
             return resp
